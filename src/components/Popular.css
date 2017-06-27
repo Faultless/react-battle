@@ -1,0 +1,35 @@
+.languages {
+	display: flex;
+	justify-content: center;
+}
+
+.languages li {
+	font-weight: bold;
+	margin: 10px;
+	cursor: pointer;
+	transition: all 200ms ease-in-out;
+}
+
+.languages li:hover {
+	color: #d0021b;
+}
+
+.popularList {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.popularItem {
+	text-align: center;
+	margin: 20px;
+}
+
+.itemRank {
+	font-size: 20px;
+}
+
+.itemImage {
+	width: 140px;
+	border-radius: 50%;
+}
