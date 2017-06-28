@@ -18,6 +18,11 @@ a {
   color: #d0021b;
 }
 
+.row {
+  display: flex;
+  justify-content: space-around;
+}
+
 .nav {
   display: flex;
 }
