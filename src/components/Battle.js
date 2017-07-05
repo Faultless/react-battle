@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
+import { PlayerPreview } from './PlayerPreview';
 
 class PlayerInput extends Component {
 	constructor(props) {
@@ -34,8 +37,8 @@ class PlayerInput extends Component {
 
 	render() {
 		return (
-			<form className="column" onSubmit={handleSubmit}>
-				<label className="header" htmlFor="username">this.props.label</label>
+			<form className="column" onSubmit={this.handleSubmit}>
+				<label className="header" htmlFor="username">{this.props.label}</label>
 				<input 
 					id="username" 
 					placeholder="github username"
@@ -57,7 +60,7 @@ class PlayerInput extends Component {
 PlayerInput.propTypes = {
 	id: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
-	handleSubmit: PropTypes.func.isRequired
+	onSubmit: PropTypes.func.isRequired
 }
 
 class Battle extends Component {
@@ -65,11 +68,12 @@ class Battle extends Component {
 		super(props);
 		this.state = {
 			playerOneName: '',
-			playerOneImage: '',
-			playerTwoName: null,
+			playerOneImage: null,
+			playerTwoName: '',
 			playerTwoImage: null
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleReset = this.handleReset.bind(this);
 	}
 	handleSubmit (id, username) {
 		this.setState(() => {
@@ -79,27 +83,75 @@ class Battle extends Component {
 			return newState;
 		});
 	}
+	handleReset (id) {
+		this.setState(() => {
+			var newState = {};
+			newState[id + 'Name'] = '';
+			newState[id + 'Image'] = null;
+			return newState;
+		});
+	}
 	render () {
+		var match = this.props.match;
 		var playerOneName = this.state.playerOneName;
 		var playerTwoName = this.state.playerTwoName;
+		var playerOneImage = this.state.playerOneImage;
+		var playerTwoImage = this.state.playerTwoImage;
 		return (
 			<div>
 				<div className="row">
-					{
-						!playerOneName &&
+					{!playerOneName &&
 						<PlayerInput
-							id="PlayerOne"
+							id="playerOne"
 							label="Player One"
-							onSubmit={this.handleSubmit} />
-					}
+							onSubmit={this.handleSubmit} 
+						/>}
 					{
-						!playerTwoName &&
+						playerOneImage !== null &&
+						<PlayerPreview 
+							avatar={playerOneImage}
+							username={playerOneName}
+						>
+							<button
+								className='reset'
+								onClick={this.handleReset.bind(null, 'playerOne')}>
+									Reset
+							</button>
+						</PlayerPreview>
+					}
+					{!playerTwoName && 
 						<PlayerInput
-							id="PlayerTwo"
+							id="playerTwo"
 							label="Player Two"
-							onSubmit={this.handleSubmit} />
+							onSubmit={this.handleSubmit} 
+						/>}
+					{
+						playerTwoImage !== null &&
+						<PlayerPreview 
+							avatar={playerTwoImage}
+							username={playerTwoName}
+						>
+							<button
+								className='reset'
+								onClick={this.handleReset.bind(null, 'playerTwo')}>
+									Reset
+							</button>
+						</PlayerPreview>
 					}
 				</div>
+				{
+					playerOneImage && playerTwoImage &&
+					<Link 
+						className="button"
+						to={
+							{
+								pathname: match.url + '/results',
+								search: '?playerOneName=' + playerOneName + '&playerTwoName=' + playerTwoName
+							}
+						}>
+							Battle
+					</Link>
+				}
 			</div>
 		)
 	}

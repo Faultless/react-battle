@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Api from "../utilities/api";
+import Loading from './Loading';
 import './Popular.css';
 
 var PopularApi = new Api();
@@ -108,7 +109,7 @@ class Popular extends Component {
 					onSelect={this.updateLanguage} />
 				{
 					!this.state.repos
-						? <p>Loading ...</p>
+						? <Loading />
 						: <RepoGrid repos={this.state.repos} />
 				}
 			</div>

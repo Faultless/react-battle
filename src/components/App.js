@@ -7,6 +7,7 @@ import Nav from './Nav';
 import Home from './Home';
 import Battle from './Battle';
 import Popular from './Popular';
+import Results from './Results';
 
 var Switch = ReactRouter.Switch;
 var Router = ReactRouter.BrowserRouter;
@@ -21,6 +22,7 @@ class App extends Component {
 					<Switch>
 						<Route exact path="/" component={Home} />
 						<Route exact path="/battle" component={Battle} />
+						<Route path="/battle/results" component={Results} />
 						<Route path='/popular' component={Popular} />
 						<Route render={() => {return <p>Not Found</p>}} />
 					</Switch>
